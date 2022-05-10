@@ -1,11 +1,11 @@
-export class Question {
+export class Question { // clasa pentru citirea intrebarilor din fisier
     id;
     score;
     type;
     difficulty;
     chapterCovered;
     distinguishingDegree;
-    solutionTime;
+    solutionTime; // timp de gandire pt intrebare, procent
 
     constructor(id, score, type, difficulty, chapterCovered, distinguishingDegree, solutionTime) {
         this.id = id;

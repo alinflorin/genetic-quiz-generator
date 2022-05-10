@@ -1,15 +1,16 @@
 import * as fs from 'fs';
 import { Question } from './question.mjs';
 export class Quiz {
-    nQuestion;
-    sumScore;
-    types = [];
-    avgDiff;
-    chapters = []
+    nQuestion; //nr total de intrebari
+    sumScore; // scor maxim
+    types = []; // tipuri active de intrebari
+    avgDiff; // diferenta medie de dificultate intre intrebari
+    chapters = [] // capitole active
     avgDist;
-    sumTime;
-    question = []
+    sumTime; // timp maxim al testului
+    question = [] // lista completa de intrebari din fisier
 
+    // functie care incarca intrebarile din fisier
     load(filename) {
         const allFileContents = fs.readFileSync(filename, 'utf-8');
         allFileContents.split(/\r?\n/).forEach(line => {

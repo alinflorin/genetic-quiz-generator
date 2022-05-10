@@ -1,6 +1,8 @@
+// Cromozom = un test, o solutie la problema noastra
+// un test = o lista de id-uri de intrebari
 export class Chromosome {
-    fitness;
-    gene = [];
+    fitness; // gradul de fitness al solutiei, cat de buna este solutia
+    gene = []; // lista cu id-urile intrebarilor din acest test
     quiz;
 
     constructor(gene, quiz) {
@@ -8,10 +10,11 @@ export class Chromosome {
         this.quiz = quiz;
         if (gene.length) {
             this.gene = gene;
-            this.fitness = this.calculateFitness(gene);
+            this.fitness = this.calculateFitness(gene); // la construirea new Chromosome() se calculeaza automat fitness-ul
         }
     }
 
+    // functie pt imperecherea cu alt cromozom
     mate(mate) {
         const arr1 = this.gene;
         const arr2 = mate.gene;
@@ -35,6 +38,7 @@ export class Chromosome {
         ];
     }
 
+    // functie pt mutatia unui cromozom - intrebarile din test se schimba cu unele random
     mutate() {
         const quizIds = this.quiz.question.map(q => q.id);
         const gene = this.gene;
@@ -44,6 +48,8 @@ export class Chromosome {
         return new Chromosome(gene, this.quiz);
     }
 
+    // functie calculare fitness
+    // se calculeaza fitness in functie de scorul, diferenta, timpul si capitolul intrebarilor
     calculateFitness(gene) {
         let tempScore = 0;
         let tempTypes = [];
@@ -52,6 +58,7 @@ export class Chromosome {
         let tempDist = 0;
         let tempTime = 0;
 
+        // trece prin toate intrebarile si calculaza o medie a valorilor: scor, timp, etc
         gene.forEach((value, key) => {
             tempScore += this.quiz.question[value - 1].score;
             tempDiff += this.quiz.question[value - 1].difficulty;
@@ -78,6 +85,7 @@ export class Chromosome {
         tempDiff /= gene.length;
         tempDist /= gene.length;
 
+        // compara mediile obtinute cu valorile cerute la configurarea testului
         let NRE = 0;
         NRE += Math.abs(this.quiz.sumScore - tempScore) / this.quiz.sumScore;
         NRE += Math.abs(this.quiz.avgDiff - tempDiff) / this.quiz.avgDiff;
@@ -104,6 +112,7 @@ export class Chromosome {
         return 1 / (1 + NRE);
     }
 
+    // genereaza un cromozom random, la inceput
     genRandom() {
         let quizIds = this.quiz.question.map(q => q.id);
         quizIds = this.shuffleArray(quizIds);
@@ -115,18 +124,21 @@ export class Chromosome {
         return this.fitness + "";
     }
 
+    // nr random intre min si max
     rand(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    // returneaza elementele care exista in array1 dar nu si in array2
     array_diff(array1, array2) {
         return array1.filter(function (elm) {
             return array2.indexOf(elm) === -1;
         });
     }
 
+     // amesteca o lista
     shuffleArray(array) {
         for (var i = array.length - 1; i > 0; i--) {
 
